@@ -25,7 +25,7 @@ export default function NavBar() {
     { label: "Art Corner", path: "/art-corner" },
   ];
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     setCursorPos({ x: e.clientX, y: e.clientY });
   };
 
