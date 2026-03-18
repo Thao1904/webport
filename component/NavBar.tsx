@@ -1,50 +1,98 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import NavItem from './NavItem';
-import FloatingShapes from './FloatingShapes';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import NavItem from "./NavItem";
 
 export default function NavBar() {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [hovered, setHovered] = useState(false);
+  const [clicked, setClicked] = useState(false);
+
+  const distance = 24;
+
+  const positions = [
+    { x: distance, y: distance },
+    { x: -distance, y: distance },
+    { x: distance, y: -distance },
+    { x: -distance, y: -distance },
+  ];
 
   const navItems = [
-    { label: 'About', path: '/about' },
-    { label: 'Project', path: '/project' },
-    { label: 'Experience', path: '/experience' },
-    { label: 'Art Corner', path: '/art-corner'},
+    { label: "About", path: "/about" },
+    { label: "Project", path: "/project" },
+    { label: "Experience", path: "/experience" },
+    { label: "Art Corner", path: "/art-corner" },
   ];
 
   const handleMouseMove = (e) => {
     setCursorPos({ x: e.clientX, y: e.clientY });
   };
 
-  return (
-    <div
-      className="min-h-screen bg-white text-black overflow-hidden"
-      onMouseMove={handleMouseMove}
-    >
-      <FloatingShapes />
+  // disable scroll when menu open
+  useEffect(() => {
+    document.body.style.overflow = clicked ? "hidden" : "auto";
+  }, [clicked]);
 
-      {/* Custom cursor follower */}
+  return (
+    <>
+      {/* Cursor follower */}
       <motion.div
-        className="fixed w-4 h-4 rounded-full border border-black pointer-events-none z-50 mix-blend-difference"
+        className="fixed w-4 h-4 rounded-full border border-black pointer-events-none z-100 mix-blend-difference"
         animate={{ x: cursorPos.x - 8, y: cursorPos.y - 8 }}
-        transition={{ type: 'spring', stiffness: 150, damping: 15 }}
+        transition={{ type: "spring", stiffness: 150, damping: 15 }}
       />
 
-      <div className="max-w-6xl mx-auto px-6 md:px-12 py-12">
+      {/* NAVBAR (always fixed) */}
+      <div
+        className={`fixed top-0 left-0 w-full z-50 flex justify-end ${clicked ? "px-10 py-10" : "px-8 py-8"}`}
+        onMouseMove={handleMouseMove}
+      >
+        <div
+          className="grid grid-cols-2 gap-2 cursor-pointer"
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          onClick={() => setClicked((prev) => !prev)}
+        >
+          {/* Dot */}
+          {[...Array(4)].map((_, i) => (
+            <motion.div
+              key={i}
+              className={`${
+                clicked ? "w-2 h-2" : "w-4 h-4"
+              } rounded-full bg-primary`}
+              animate={{
+                x: hovered && !clicked ? positions[i].x : 0,
+                y: hovered && !clicked ? positions[i].y : 0,
+              }}
+              transition={{
+                duration: 0.6,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+        </div>
+      </div>
 
-
-        {/* Navigation */}
-        <nav className="mb-24">
+      {/* FULLSCREEN MENU OVERLAY */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: clicked ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+        className={`fixed inset-0 flex justify-center items-center lg:px-40 px-10 z-40 bg-secondary/60 backdrop-blur-md w-full ${clicked ? "pointer-events-auto" : "pointer-events-none"}`}
+        onMouseMove={handleMouseMove}
+      >
+        <nav className="w-full">
           {navItems.map((item, index) => (
-            <NavItem key={item.label} label={item.label} index={index} href={item.path} icon={item.icon} />
+            <NavItem
+              key={item.label}
+              label={item.label}
+              index={index}
+              href={item.path}
+            />
           ))}
         </nav>
-
-       
-      </div>
-    </div>
+      </motion.div>
+    </>
   );
 }

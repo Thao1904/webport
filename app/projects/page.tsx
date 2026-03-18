@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import NavBar from '@/component/NavBar';
 
 const projects = [
   {
@@ -47,37 +48,9 @@ const projects = [
 
 export default function ProjectsPage() {
   return (
-    <div className="min-h-screen bg-white text-black">
+    <div className="min-h-screen bg-secondary text-black">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm">Back</span>
-          </Link>
-
-          <nav className="hidden md:flex items-center gap-8">
-            <Link href="/about" className="text-sm text-gray-600 hover:text-black transition-colors">
-              About
-            </Link>
-            <Link href="/projects" className="text-sm text-black font-medium">
-              Projects
-            </Link>
-            <Link
-              href="/experiences"
-              className="text-sm text-gray-600 hover:text-black transition-colors"
-            >
-              Experiences
-            </Link>
-            <Link href="/art-corner" className="text-sm text-gray-600 hover:text-black transition-colors">
-              Art Corner
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <NavBar />
 
       {/* Main Content */}
       <main className="pt-32 pb-20 px-6">
@@ -88,8 +61,8 @@ export default function ProjectsPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-4">Projects</h1>
-            <p className="text-gray-500">Selected works</p>
+            <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-4 text-primary">Projects</h1>
+            {/* <p className="text-gray-500">Selected works</p> */}
           </motion.div>
 
           {/* Project Grid */}

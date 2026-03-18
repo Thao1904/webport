@@ -1,11 +1,24 @@
 'use client';
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { ChevronDown, ArrowLeft } from 'lucide-react';
+import { FC, useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import NavBar from '@/component/NavBar';
 
-const experiences = [
+type Responsibilities = string[];
+type Achievements = string[];
+
+interface Experience {
+  id: number;
+  company: string;
+  role: string;
+  duration: string;
+  description: string;
+  responsibilities: Responsibilities;
+  achievements: Achievements
+}
+
+const experiences: Experience[] = [
   {
     id: 1,
     company: 'Tech Corp',
@@ -71,28 +84,34 @@ const experiences = [
   },
 ];
 
-function ExperienceCard({ experience, isExpanded, onToggle }) {
+interface ExperienceCardProps {
+  experience: Experience;
+  isExpanded: boolean; 
+  onToggle: (id: Id) => void
+}
+
+const ExperienceCard: FC<ExperienceCardProps> = ({ experience, isExpanded, onToggle }) => {
   return (
     <motion.div layout className="relative">
       {/* Timeline dot */}
-      <div className="absolute left-0 md:left-1/2 top-0 w-4 h-4 bg-black rounded-full transform -translate-x-1/2 z-10" />
+      <div className="absolute left-0 md:left-1/2 top-0 w-4 h-4 bg-white rounded-full transform -translate-x-1/2 z-10" />
 
       {/* Card */}
       <div className={`ml-8 md:ml-0 ${experience.id % 2 === 0 ? 'md:mr-[52%]' : 'md:ml-[52%]'}`}>
         <motion.div
           layout
-          onClick={onToggle}
-          className="bg-white border border-gray-200 rounded-3xl p-6 cursor-pointer hover:shadow-lg transition-shadow duration-300"
+          onClick={() => onToggle}
+          className="border border-gray-200 rounded-3xl p-6 cursor-pointer hover:shadow-lg transition-shadow duration-300"
         >
           <motion.div layout="position" className="flex justify-between items-start mb-3">
             <div>
-              <h3 className="text-xl font-medium">{experience.company}</h3>
-              <p className="text-gray-500 text-sm">{experience.role}</p>
+              <h3 className="text-xl font-semibold text-white">{experience.company}</h3>
+              <p className="text-primary text-sm">{experience.role}</p>
             </div>
-            <span className="text-xs text-gray-400 bg-gray-100 px-3 py-1 rounded-full">{experience.duration}</span>
+            <span className="text-xs text-primary bg-primary/30 px-3 py-1 rounded-full">{experience.duration}</span>
           </motion.div>
 
-          <motion.p layout="position" className="text-gray-600 text-sm mb-4">
+          <motion.p layout="position" className="text-white text-sm mb-4">
             {experience.description}
           </motion.p>
 
@@ -114,11 +133,11 @@ function ExperienceCard({ experience, isExpanded, onToggle }) {
               >
                 <div className="pt-6 mt-6 border-t border-gray-100">
                   <div className="mb-6">
-                    <h4 className="text-sm font-medium mb-3">Responsibilities</h4>
+                    <h4 className="text-white text-sm font-semibold mb-3">Responsibilities</h4>
                     <ul className="space-y-2">
                       {experience.responsibilities.map((item, index) => (
-                        <li key={index} className="flex items-start gap-3 text-sm text-gray-600">
-                          <span className="w-1.5 h-1.5 bg-black rounded-full mt-2 flex-shrink-0" />
+                        <li key={index} className="flex items-start gap-3 text-sm text-white font-light">
+                          <span className="w-1.5 h-1.5 bg-white rounded-full mt-2 shrink-0" />
                           {item}
                         </li>
                       ))}
@@ -126,11 +145,11 @@ function ExperienceCard({ experience, isExpanded, onToggle }) {
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-medium mb-3">Achievements</h4>
+                    <h4 className="text-white text-sm font-semibold mb-3">Achievements</h4>
                     <ul className="space-y-2">
                       {experience.achievements.map((item, index) => (
-                        <li key={index} className="flex items-start gap-3 text-sm text-gray-600">
-                          <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 flex-shrink-0" />
+                        <li key={index} className="flex items-start gap-3 text-sm text-white font-light">
+                          <span className="w-1.5 h-1.5 bg-white rounded-full mt-2 shrink-0" />
                           {item}
                         </li>
                       ))}
@@ -146,43 +165,17 @@ function ExperienceCard({ experience, isExpanded, onToggle }) {
   );
 }
 
-export default function ExperiencesPage() {
-  const [expandedId, setExpandedId] = useState(null);
+type Id = number | null
 
-  const toggleCard = (id) => setExpandedId((prev) => (prev === id ? null : id));
+export default function ExperiencesPage() {
+  const [expandedId, setExpandedId] = useState<Id>(null);
+
+  const toggleCard = (id: Id) => setExpandedId((prev) => (prev === id ? null : id));
 
   return (
-    <div className="min-h-screen bg-white text-black">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-          {/* Next.js Link uses href (no createPageUrl) */}
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm">Back</span>
-          </Link>
-
-          <nav className="hidden md:flex items-center gap-8">
-            <Link href="/about" className="text-sm text-gray-600 hover:text-black transition-colors">
-              About
-            </Link>
-            <Link href="/projects" className="text-sm text-gray-600 hover:text-black transition-colors">
-              Projects
-            </Link>
-            <Link href="/experiences" className="text-sm text-black font-medium">
-              Experiences
-            </Link>
-            <Link href="/art-corner" className="text-sm text-gray-600 hover:text-black transition-colors">
-              Art Corner
-            </Link>
-          </nav>
-        </div>
-      </header>
-
+    <div className="min-h-screen bg-secondary text-black">
       {/* Main Content */}
+      <NavBar />
       <main className="pt-32 pb-20 px-6">
         <div className="max-w-4xl mx-auto">
           <motion.div
@@ -191,8 +184,8 @@ export default function ExperiencesPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-4">Experiences</h1>
-            <p className="text-gray-500">My professional journey</p>
+            <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-4 text-primary">Experiences</h1>
+            {/* <p className="text-gray-500">My professional journey</p> */}
           </motion.div>
 
           {/* Timeline */}
