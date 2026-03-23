@@ -5,47 +5,21 @@ import Image from 'next/image';
 import { ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import NavBar from '@/component/NavBar';
-
-const projects = [
-  {
-    id: 'clarity',
-    name: 'Clarity',
-    description: 'A minimalist task management app focused on simplicity and flow.',
-    image: 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=400&q=80',
-  },
-  {
-    id: 'pulse',
-    name: 'Pulse',
-    description: 'Real-time analytics dashboard for monitoring user engagement.',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&q=80',
-  },
-  {
-    id: 'echo',
-    name: 'Echo',
-    description: 'Voice-first note-taking app with AI transcription.',
-    image: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=400&q=80',
-  },
-  {
-    id: 'drift',
-    name: 'Drift',
-    description: 'Meditation and mindfulness platform with ambient soundscapes.',
-    image: 'https://images.unsplash.com/photo-1528715471579-d1bcf0ba5e83?w=400&q=80',
-  },
-  {
-    id: 'forge',
-    name: 'Forge',
-    description: 'Design system toolkit for rapid prototyping.',
-    image: 'https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=400&q=80',
-  },
-  {
-    id: 'bloom',
-    name: 'Bloom',
-    description: 'E-commerce platform for sustainable plant retailers.',
-    image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80',
-  },
-];
+import { useEffect, useState } from 'react';
 
 export default function ProjectsPage() {
+  const [projects, setProjects] = useState<any[]>([])
+
+  const fetchProjects = async () => {
+      const res = await fetch("/api/projects")
+      const data = await res.json()
+      setProjects(data)
+    }
+  
+    useEffect(() => {
+      fetchProjects()
+    }, [])
+  
   return (
     <div className="min-h-screen bg-secondary text-black">
       {/* Header */}
@@ -68,19 +42,19 @@ export default function ProjectsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
             {projects.map((project, index) => (
               <motion.div
-                key={project.id}
+                key={project._id}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <Link
-                  href={`/project-detail?id=${project.id}`}
+                  href={project.refLink}
                   className="group block cursor-pointer"
                 >
                   <div className="w-56 h-56 md:w-64 md:h-64 rounded-full border border-gray-200 overflow-hidden relative hover:border-black transition-all duration-500">
                     {/* Background Image - grayscale, visible on hover */}
                     <Image
-                      src={project.image}
+                      src={project.imageUrl}
                       alt={project.name}
                       fill
                       sizes="(max-width: 768px) 224px, 256px"
