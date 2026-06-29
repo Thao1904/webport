@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import NavBar from '@/component/NavBar';
@@ -97,10 +97,11 @@ const ExperienceCard: FC<ExperienceCardProps> = ({ experience, isExpanded, onTog
       <div className="absolute left-0 md:left-1/2 top-0 w-4 h-4 bg-white rounded-full transform -translate-x-1/2 z-10" />
 
       {/* Card */}
-      <div className={`ml-8 md:ml-0 ${experience.id % 2 === 0 ? 'md:mr-[52%]' : 'md:ml-[52%]'}`}>
+      <div className={`ml-8 md:ml-0 ${experience.id % 2 === 0 ? 'md:mr-[52%]' : 'md:ml-[52%]'}`}
+        onClick={onToggle}
+      >
         <motion.div
           layout
-          onClick={() => onToggle}
           className="border border-gray-200 rounded-3xl p-6 cursor-pointer hover:shadow-lg transition-shadow duration-300"
         >
           <motion.div layout="position" className="flex justify-between items-start mb-3">
@@ -170,7 +171,9 @@ type Id = number | null
 export default function ExperiencesPage() {
   const [expandedId, setExpandedId] = useState<Id>(null);
 
-  const toggleCard = (id: Id) => setExpandedId((prev) => (prev === id ? null : id));
+  const toggleCard = (id: Id) => {
+    setExpandedId((prev) => (prev === id ? null : id))
+  };
 
   return (
     <div className="min-h-screen bg-secondary text-black">
@@ -204,7 +207,7 @@ export default function ExperiencesPage() {
                   <ExperienceCard
                     experience={experience}
                     isExpanded={expandedId === experience.id}
-                    onToggle={() => toggleCard(experience.id)}
+                    onToggle={() => {toggleCard(experience.id); console.log('vao')}}
                   />
                 </motion.div>
               ))}

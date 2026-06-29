@@ -1,5 +1,5 @@
 import { ProjectRepository } from "../repositories/project.repository"
-import { IProject } from "../models/Project"
+import { IProjectModel } from "../models/Project"
 
 const repo = new ProjectRepository()
 
@@ -18,7 +18,7 @@ export class ProjectService {
     return project
   }
 
-  async createProject(data: IProject) {
+  async createProject(data: IProjectModel) {
     if (!data.name || !data.description) {
       throw new Error("VALIDATION_ERROR")
     }
@@ -26,7 +26,7 @@ export class ProjectService {
     return repo.create(data)
   }
 
-  async updateProject(id: string, data: Partial<IProject>) {
+  async updateProject(id: string, data: Partial<IProjectModel>) {
     const updated = await repo.update(id, data)
 
     if (!updated) {
