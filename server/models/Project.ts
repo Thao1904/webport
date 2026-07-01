@@ -5,8 +5,8 @@ export interface IProjectModel {
   short_description: string
   content: string
   thumbnail: string
-  password: string
-  ref_link: string
+  password?: string
+  ref_link?: string
   categories: Schema.Types.ObjectId[]
   viewed: number
   is_public: boolean
@@ -22,7 +22,7 @@ const ProjectSchema = new Schema<IProjectModel>(
     ref_link: {required: false, type: String},
     categories: {required: true, type: [Schema.Types.ObjectId], ref: "Category"},
     viewed: {required: false, type: Number, default: 0},
-    is_public: {required: true, type: Boolean, default: true}
+    is_public: {required: true, type: Boolean}
   },
   { timestamps: true }
 )

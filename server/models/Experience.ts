@@ -7,7 +7,7 @@ export interface IExperienceModel {
   company: string
   short_description: string
   detail: string
-  is_ongoing: boolean
+  is_ongoing?: boolean
 }
 
 const ExperienceSchema = new Schema<IExperienceModel>(

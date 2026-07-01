@@ -1,24 +1,10 @@
 import { ExperienceRepository } from "../repositories/experience.repository"
-import { IExperience } from "../models/Experience"
+import { IExperienceModel } from "../models/Experience"
+import { BaseService } from "./base.service"
 
 const repo = new ExperienceRepository()
 
-export class ExperienceService {
-  private normalizeLines(value: string[] | string | undefined): string[] {
-    if (!value) return []
-
-    if (Array.isArray(value)) {
-      return value
-        .map((item) => item.trim())
-        .filter(Boolean)
-    }
-
-    return value
-      .split("\n")
-      .map((item) => item.trim())
-      .filter(Boolean)
-  }
-
+export class ExperienceService extends BaseService {
   async getAllExperiences() {
     return repo.findAll()
   }
@@ -33,44 +19,21 @@ export class ExperienceService {
     return experience
   }
 
-  async createExperience(data: any) {
-    const responsibilities = this.normalizeLines(data.responsibilities)
-    const achievements = this.normalizeLines(data.achievements)
+  async createExperience(data: IExperienceModel) {
+    const requiredList: (keyof IExperienceModel)[] = ["job_title", "company", "detail", "job_title", "position", "short_description", "year"];
 
-    if (
-      !data.jobTitle ||
-      !data.year ||
-      !data.position ||
-      !data.shortDescription ||
-      responsibilities.length === 0 ||
-      achievements.length === 0
-    ) {
-      throw new Error("VALIDATION_ERROR")
+    const isValid = this.validateFields(data, requiredList);
+
+    if (!isValid) {
+      throw new Error("VALIDATION_ERROR");
     }
 
-    const payload: IExperience = {
-      jobTitle: data.jobTitle,
-      year: data.year,
-      position: data.position,
-      shortDescription: data.shortDescription,
-      responsibilities,
-      achievements,
-    }
-
-    return repo.create(payload)
+    return repo.create(data)
   }
 
   async updateExperience(id: string, data: any) {
-    const payload: Partial<IExperience> = {
+    const payload: Partial<IExperienceModel> = {
       ...data,
-    }
-
-    if (data.responsibilities !== undefined) {
-      payload.responsibilities = this.normalizeLines(data.responsibilities)
-    }
-
-    if (data.achievements !== undefined) {
-      payload.achievements = this.normalizeLines(data.achievements)
     }
 
     const updated = await repo.update(id, payload)

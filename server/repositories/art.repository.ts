@@ -1,4 +1,4 @@
-import {Art, IArt } from "../models/Art"
+import {Art, IArtModel } from "../models/Art"
 
 export class ArtRepository {
   async findAll() {
@@ -9,11 +9,11 @@ export class ArtRepository {
     return Art.findById(id)
   }
 
-  async create(data: IArt) {
+  async create(data: IArtModel) {
     return Art.create(data)
   }
 
-  async update(id: string, data: Partial<IArt>) {
+  async update(id: string, data: Partial<IArtModel>) {
     return Art.findByIdAndUpdate(id, data, {
       new: true,
     })

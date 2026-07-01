@@ -1,9 +1,10 @@
 import { ProjectRepository } from "../repositories/project.repository"
 import { IProjectModel } from "../models/Project"
+import { BaseService } from "./base.service"
 
 const repo = new ProjectRepository()
 
-export class ProjectService {
+export class ProjectService extends BaseService{
   async getAllProjects() {
     return repo.findAll()
   }
@@ -19,8 +20,15 @@ export class ProjectService {
   }
 
   async createProject(data: IProjectModel) {
-    if (!data.name || !data.description) {
-      throw new Error("VALIDATION_ERROR")
+    const requiredList: (keyof IProjectModel)[] = ["title", "short_description", "content", "thumbnail", "categories", "is_public"];
+
+    const isValid = this.validateFields(data, requiredList);
+
+    const isValidUrl = data.ref_link ? this.validateUrl(data.thumbnail) && this.validateUrl(data.ref_link) : this.validateUrl(data.thumbnail);
+
+    const isValidPassword = data.password ? this.validatePassword(data.password) : true
+    if (!isValid || !isValidUrl || !isValidPassword) {
+      throw new Error("VALIDATION_ERROR");
     }
 
     return repo.create(data)

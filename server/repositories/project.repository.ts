@@ -1,4 +1,4 @@
-import { Project, IProject } from "../models/Project"
+import { Project, IProjectModel } from "../models/Project"
 
 export class ProjectRepository {
   async findAll() {
@@ -9,11 +9,11 @@ export class ProjectRepository {
     return Project.findById(id)
   }
 
-  async create(data: IProject) {
+  async create(data: IProjectModel) {
     return Project.create(data)
   }
 
-  async update(id: string, data: Partial<IProject>) {
+  async update(id: string, data: Partial<IProjectModel>) {
     return Project.findByIdAndUpdate(id, data, {
       new: true,
     })

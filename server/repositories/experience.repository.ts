@@ -1,4 +1,4 @@
-import { Experience, IExperience } from "../models/Experience"
+import { Experience, IExperienceModel } from "../models/Experience"
 
 export class ExperienceRepository {
   async findAll() {
@@ -9,11 +9,11 @@ export class ExperienceRepository {
     return Experience.findById(id)
   }
 
-  async create(data: IExperience) {
+  async create(data: IExperienceModel) {
     return Experience.create(data)
   }
 
-  async update(id: string, data: Partial<IExperience>) {
+  async update(id: string, data: Partial<IExperienceModel>) {
     return Experience.findByIdAndUpdate(id, data, {
       new: true,
     })

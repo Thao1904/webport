@@ -1,9 +1,10 @@
 import { ArtRepository } from "../repositories/art.repository"
-import { IArt } from "../models/Art"
+import { IArtModel } from "../models/Art"
+import { BaseService } from "./base.service"
 
 const repo = new ArtRepository()
 
-export class ArtService {
+export class ArtService extends BaseService {
   async getAllArts() {
     return repo.findAll()
   }
@@ -18,15 +19,22 @@ export class ArtService {
     return art
   }
 
-  async createArt(data: IArt) {
-    if (!data.title || !data.medium || !data.year || !data.imageUrl || !data.refLink) {
-      throw new Error("VALIDATION_ERROR")
+  async createArt(data: IArtModel) {
+    const requiredList: (keyof IArtModel)[] = ["title", "short_description", "content", "thumbnail", "categories", "is_public"];
+
+    const isValid = this.validateFields(data, requiredList);
+
+    const isValidUrl = data.ref_link ? this.validateUrl(data.thumbnail) && this.validateUrl(data.ref_link) : this.validateUrl(data.thumbnail);
+
+    const isValidPassword = data.password ? this.validatePassword(data.password) : true
+    if (!isValid || !isValidUrl || !isValidPassword) {
+      throw new Error("VALIDATION_ERROR");
     }
 
     return repo.create(data)
   }
 
-  async updateArt(id: string, data: Partial<IArt>) {
+  async updateArt(id: string, data: Partial<IArtModel>) {
     const updated = await repo.update(id, data)
 
     if (!updated) {

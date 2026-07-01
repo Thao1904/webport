@@ -5,7 +5,7 @@ export interface IArtModel {
   short_description: string;
   thumbnail: string;
   ref_link: string;
-  ref_image: string;
+  password: string;
   categories: Schema.Types.ObjectId[];
   content: string;
   viewed: number;
@@ -17,8 +17,8 @@ const ArtSchema = new Schema<IArtModel> (
     title: { required: true, type: String },
     short_description: {required: true, type: String},
     thumbnail: {required: true, type: String}, 
-    ref_link: {required: false, type: String}, 
-    ref_image: {required: true, type: String},
+    ref_link: {required: false, type: String},
+    password: {required: false, type: String},
     categories: {required: true, type: [Schema.Types.ObjectId], ref: "Category"},
     content: {required: true, type: String}, 
     viewed: {required: false, type: Number, default: 0},
