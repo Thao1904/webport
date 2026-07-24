@@ -3,40 +3,34 @@
 import { useEffect, useState } from "react"
 import ProjectList from "./components/ProjectList"
 import CreateProjectModal from "./components/CreateProjectModal"
+import { useAdmin } from "../../contexts/AdminProvider"
+
+const actionButtons = [
+  <button>+ New Project</button>
+]
 
 export default function ProjectsPage() {
-  //init
+  const { setActionButtons } = useAdmin();
   const [projects, setProjects] = useState<any[]>([])
   const [open, setOpen] = useState(false)
 
-  //function
   const fetchProjects = async () => {
     const res = await fetch("/api/projects")
-    console.log();
     
     const data = await res.json()
     setProjects(data)
   }
   
   useEffect(() => {
-    //This useEffect will just be executed 1 time when first load the component
     fetchProjects()
   }, [])
-  
+
   useEffect(() => {
-    //This useEffect will be executed when:
-    // - First load component
-    // - Value of dependencies change (Example: {open})
-  }, [open])
-  
-  useEffect(() => {
-    //This useEffect will be executed when:
-    // - First load component
-    // - Value of any variables change
-  })
+    setActionButtons(actionButtons);
+  }, [])
 
   return (
-    <div style={{ padding: 20 }}>
+    <div className="pl-4">
       <h1>Projects</h1>
 
       <button onClick={() => setOpen(true)}>

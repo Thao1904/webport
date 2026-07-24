@@ -10,10 +10,14 @@ export default function CreateProjectModal({
   onSuccess: () => void
 }) {
   const [form, setForm] = useState({
-    name: "",
-    description: "",
-    imageUrl: "",
-    refLink: "",
+    title: "",
+    short_description: "",
+    content: "",
+    thumbnail: "",
+    password: "",
+    ref_link: "",
+    categories: ["1", "2"],
+    is_public: false,
   })
 
   if (!open) return null
@@ -28,13 +32,20 @@ export default function CreateProjectModal({
       onSuccess()
       onClose()
       setForm({
-        name: "",
-        description: "",
-        imageUrl: "",
-        refLink: "",
+        title: "",
+        short_description: "",
+        content: "",
+        thumbnail: "",
+        password: "",
+        ref_link: "",
+        categories: [],
+        is_public: false,
       })
     } else {
-      alert("Error creating project")
+      const resJson = await res.json()
+      console.log(resJson);
+      
+      alert("Error creating project: " + resJson.error)
     }
   }
 
@@ -44,34 +55,51 @@ export default function CreateProjectModal({
         <h2>Create Project</h2>
 
         <input
-          placeholder="Name"
-          value={form.name}
+          placeholder="Title"
+          value={form.title}
           onChange={(e) =>
-            setForm({ ...form, name: e.target.value })
+            setForm({ ...form, title: e.target.value })
           }
         />
 
         <input
-          placeholder="Description"
-          value={form.description}
+          placeholder="Short Description"
+          value={form.short_description}
           onChange={(e) =>
-            setForm({ ...form, description: e.target.value })
+            setForm({ ...form, short_description: e.target.value })
           }
         />
 
         <input
-          placeholder="Image URL"
-          value={form.imageUrl}
+          placeholder="Content"
+          value={form.content}
           onChange={(e) =>
-            setForm({ ...form, imageUrl: e.target.value })
+            setForm({ ...form, content: e.target.value })
+          }
+        />
+
+        <input
+          placeholder="Thumbnail"
+          value={form.thumbnail}
+          onChange={(e) =>
+            setForm({ ...form, thumbnail: e.target.value })
+          }
+        />
+
+        <input
+          placeholder="Password"
+          // type="password"
+          value={form.password}
+          onChange={(e) =>
+            setForm({ ...form, password: e.target.value })
           }
         />
 
         <input
           placeholder="Ref Link"
-          value={form.refLink}
+          value={form.ref_link}
           onChange={(e) =>
-            setForm({ ...form, refLink: e.target.value })
+            setForm({ ...form, ref_link: e.target.value })
           }
         />
 

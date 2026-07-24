@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@plugin "daisyui" {
+  themes: valentine --default;
+};
 
 @theme inline {
   --font-sans: var(--font-geist-sans);
