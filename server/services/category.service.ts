@@ -13,4 +13,8 @@ export class CategoryService extends BaseService {
         }
         return repo.create(data)
     }
+
+    async getAllCategories() {
+        return repo.findAll()
+    }
 }

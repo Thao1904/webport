@@ -1,3 +1,2 @@
-export type TTab = "dashboard" | "projects" | "arts" | "categories" | "experiences" | "about" | "social" | "settings"
-export type TTabContentTitle = "Dashboard" | "Projects" | "Arts" | "Categories" | "Experiences" | "About"
-export type TTabSiteTitle = "Social" | "Settings"
+export type TTab = "dashboard" | "projects" | "arts" | "categories" | "experiences" | "about" | "social" | "settings" | "projects_create"
+export type THeader = "Dashboard" | "Projects" | "Arts" | "Categories" | "Experiences" | "About" | "Social" | "Settings" | "Project Editor"

@@ -1,8 +1,7 @@
 import { useAdmin } from "@/app/(admin)/admin/contexts/AdminProvider";
 import {
-  TTab,
-  TTabContentTitle,
-  TTabSiteTitle,
+  THeader,
+  TTab
 } from "@/app/(admin)/admin/interface";
 import { tabMapping, tabTitleMapping } from "@/app/(admin)/admin/layout";
 import {
@@ -19,7 +18,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 interface TabProps {
-  tabTitle: TTabContentTitle | TTabSiteTitle;
+  tabTitle: THeader;
   isCurrent: boolean;
   Icon: React.ReactElement;
 }
@@ -53,7 +52,7 @@ interface SidebarProps {
 }
 
 const AdminSidebar: React.FC<SidebarProps> = ({ currentTab }) => {
-  const tabsContentList: TTabContentTitle[] = [
+  const tabsContentList: THeader[] = [
     "Dashboard",
     "Projects",
     "Arts",
@@ -61,7 +60,7 @@ const AdminSidebar: React.FC<SidebarProps> = ({ currentTab }) => {
     "Experiences",
     "About",
   ];
-  const tabsSiteList: TTabSiteTitle[] = ["Social", "Settings"];
+  const tabsSiteList: THeader[] = ["Social", "Settings"];
 
   const iconMapping = {
     Dashboard: <LayoutDashboard className="w-4 h-4" />,
@@ -79,7 +78,7 @@ const AdminSidebar: React.FC<SidebarProps> = ({ currentTab }) => {
       <h3 className="text-primary text-xs opacity-30 pl-4 font-bold mb-2">
         CONTENT
       </h3>
-      {tabsContentList.map((tabContent: TTabContentTitle) => (
+      {tabsContentList.map((tabContent: THeader) => (
         <Tab
           key={tabContent}
           tabTitle={tabContent}
@@ -90,7 +89,7 @@ const AdminSidebar: React.FC<SidebarProps> = ({ currentTab }) => {
       <h3 className="text-primary text-xs opacity-30 pl-4 font-bold my-2">
         SITE
       </h3>
-      {tabsSiteList.map((tabSite: TTabSiteTitle) => (
+      {tabsSiteList.map((tabSite: THeader) => (
         <Tab
           key={tabSite}
           tabTitle={tabSite}

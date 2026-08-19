@@ -9,7 +9,8 @@ export interface IProjectModel {
   ref_link?: string
   categories: Schema.Types.ObjectId[]
   viewed: number
-  is_public: boolean
+  is_publish: boolean
+  is_private: boolean
 }
 
 const ProjectSchema = new Schema<IProjectModel>(
@@ -22,7 +23,8 @@ const ProjectSchema = new Schema<IProjectModel>(
     ref_link: {required: false, type: String},
     categories: {required: true, type: [Schema.Types.ObjectId], ref: "Category"},
     viewed: {required: false, type: Number, default: 0},
-    is_public: {required: true, type: Boolean}
+    is_publish: {required: false, type: Boolean, default: true},
+    is_private: {required: false, type: Boolean, default: false}
   },
   { timestamps: true }
 )

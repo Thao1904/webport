@@ -3,6 +3,18 @@ import { connectDB } from '@/config/db'
 import { NextResponse } from 'next/server'
 
 const service = new CategoryService()
+
+export async function GET() {
+  try {
+    await connectDB()
+
+    const data = await service.getAllCategories()
+    return NextResponse.json(data)
+  } catch (err) {
+    return NextResponse.json({ error: "Failed" }, { status: 500 })
+  }
+}
+
 export async function POST(req: Request) {
     try {
         await connectDB()

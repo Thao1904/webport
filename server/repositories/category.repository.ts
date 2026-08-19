@@ -4,4 +4,8 @@ export class CategoryRepository {
     async create(data: ICategoryModel) {
         return Category.create(data)
     }
+
+    async findAll() {
+        return Category.find().sort({ createdAt: -1 })
+    }
 }

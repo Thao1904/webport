@@ -6,7 +6,7 @@ export class BaseService {
     ][]) {
       if (!requiredList.includes(key)) continue;
       if (typeof value == "string" || Array.isArray(value)) {
-        if (value || value.length == 0) {
+        if (!value || value.length == 0) {
             return false;
         }
       } 

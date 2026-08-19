@@ -1,9 +1,10 @@
 import { createContext, useContext } from "react";
-import { TTab } from "../interface";
+import { THeader, TTab } from "../interface";
 
 type AdminContextType = {
   setActionButtons: (buttons: React.ReactNode[]) => void;
   setCurrentTab: React.Dispatch<React.SetStateAction<TTab>>;
+  setCurrentHeader: React.Dispatch<React.SetStateAction<THeader>>
 };
 
 export const AdminContext = createContext<AdminContextType | null>(null);

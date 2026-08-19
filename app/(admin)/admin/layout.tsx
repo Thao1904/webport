@@ -2,7 +2,7 @@
 
 import AdminHeader from "@/component/admin/Header";
 import React from "react";
-import { TTab } from "./interface";
+import { THeader, TTab } from "./interface";
 import AdminSidebar from "@/component/admin/Sidebar";
 import { AdminContext } from "./contexts/AdminProvider";
 
@@ -15,6 +15,7 @@ export const tabMapping = {
   about: "About",
   social: "Social",
   settings: "Settings",
+  projects_create: "Project Editor"
 };
 
 export const tabTitleMapping: Record<string, TTab> = {
@@ -34,11 +35,12 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   const [currentTab, setCurrentTab] = React.useState<TTab>("dashboard");
-  const [actionButtons, setActionButtons] = React.useState<React.ReactNode[] | null>(null);
+  const [currentHeader, setCurrentHeader] = React.useState<THeader>("Dashboard");
+  const [actionButtons, setActionButtons] = React.useState<React.ReactNode[]>([]);
 
   return (
-    <AdminContext.Provider value={{setActionButtons, setCurrentTab}}>
-      <AdminHeader currentTab={currentTab} actionButtons={actionButtons}/>
+    <AdminContext.Provider value={{setActionButtons, setCurrentTab, setCurrentHeader}}>
+      <AdminHeader currentHeader={currentHeader} currentTab={currentTab} actionButtons={actionButtons}/>
       <div className="grid grid-cols-5">
         <AdminSidebar currentTab={currentTab}/>
         {children}
