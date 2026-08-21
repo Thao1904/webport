@@ -48,14 +48,14 @@ export default function ProjectsPage() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <Link
-                  href={project.refLink}
+                  href={project.ref_link}
                   className="group block cursor-pointer"
                 >
                   <div className="w-56 h-56 md:w-64 md:h-64 rounded-full border border-gray-200 overflow-hidden relative hover:border-black transition-all duration-500">
                     {/* Background Image - grayscale, visible on hover */}
                     <Image
-                      src={project.imageUrl}
-                      alt={project.name}
+                      src={project.thumbnail}
+                      alt={project.title}
                       fill
                       sizes="(max-width: 768px) 224px, 256px"
                       className="object-cover grayscale opacity-0 group-hover:opacity-100 transition-all duration-500"
@@ -68,9 +68,9 @@ export default function ProjectsPage() {
 
                     {/* Content */}
                     <div className="relative z-10 h-full flex flex-col items-center justify-center text-center p-8 group-hover:text-white transition-colors duration-500">
-                      <h3 className="text-xl font-medium mb-3">{project.name}</h3>
+                      <h3 className="text-xl font-medium mb-3">{project.title}</h3>
                       <p className="text-sm text-gray-500 group-hover:text-gray-300 leading-relaxed transition-colors duration-500">
-                        {project.description}
+                        {project.short_description}
                       </p>
                       <ArrowUpRight className="w-4 h-4 mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>

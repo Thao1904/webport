@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAdmin } from "../../../contexts/AdminProvider";
 import AdminButton from "@/component/admin/Button";
+import RichTextEditor from "@/component/admin/TextEditor";
 
 type ProjectForm = {
   title: string;
@@ -12,7 +13,6 @@ type ProjectForm = {
   password: string;
   ref_link: string;
   categories: string[];
-  is_publish: boolean;
   is_private: boolean;
 };
 
@@ -45,7 +45,6 @@ export default function CreateProjectPage() {
     password: "",
     ref_link: "",
     categories: [],
-    is_publish: false,
     is_private: false,
   });
 
@@ -63,20 +62,53 @@ export default function CreateProjectPage() {
   }, []);
 
   const handleSelectCategory = (categoryId: any) => {
+    //kiem tra xem categories o trong form da co gia tri cua category ma dang select
     if (form.categories.includes(categoryId)) {
+      //da ton tai => remove categoryId ra khoi form.categories
       setForm((prev) => ({
         ...prev,
-        categories: prev.categories.filter(
-          (category) => category != categoryId,
-        ),
+        categories: prev.categories.filter((ele) => ele != categoryId),
       }));
     } else {
+      //chua ton tai => them categoryId vao form.categories
       setForm((prev) => ({
         ...prev,
         categories: [...prev.categories, categoryId],
       }));
     }
   };
+
+  const handleSubmit = async (isPublish: boolean) => {
+    const payload = { ...form, is_publish: isPublish }
+
+    const res = await fetch("/api/projects", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    })
+
+    if (res.ok) {
+      alert("Create Project Successfully")
+      setForm({
+        title: "",
+        short_description: "",
+        content: "",
+        thumbnail: "",
+        password: "",
+        ref_link: "",
+        categories: [],
+        is_private: false,
+      })
+    } else {
+      const resJson = await res.json()
+      console.log(resJson);
+      
+      alert("Error creating project: " + resJson.error)
+    }
+  };
+
+  const handleSetContent = (content: string) => {
+    setForm((prev) => ({...prev, content: content }))
+  }
 
   return (
     <div className="w-full bg-[#F5F5F5] col-span-4">
@@ -108,72 +140,80 @@ export default function CreateProjectPage() {
           )}
         </div>
       </div>
-      <input
-        placeholder="Title"
-        value={form.title}
-        onChange={(e) => setForm({ ...form, title: e.target.value })}
-      />
-      <input
-        placeholder="Short description"
-        value={form.short_description}
-        onChange={(e) =>
-          setForm({ ...form, short_description: e.target.value })
-        }
-      />
-      <input
-        placeholder="Content"
-        value={form.content}
-        onChange={(e) => setForm({ ...form, content: e.target.value })}
-      />
-      <input
-        placeholder="Thumbnail"
-        value={form.thumbnail}
-        onChange={(e) => setForm({ ...form, thumbnail: e.target.value })}
-      />
-      <input
-        placeholder="Password"
-        value={form.password}
-        onChange={(e) => setForm({ ...form, password: e.target.value })}
-      />
-      <input
-        placeholder="Project link"
-        value={form.ref_link}
-        onChange={(e) => setForm({ ...form, ref_link: e.target.value })}
-      />
-
+      <div className="grid grid-cols-1 gap-4 my-4">
+        <input
+          className="input"
+          placeholder="Title"
+          value={form.title}
+          onChange={(e) => setForm({ ...form, title: e.target.value })}
+        />
+        <input
+          className="input"
+          placeholder="Short description"
+          value={form.short_description}
+          onChange={(e) =>
+            setForm({ ...form, short_description: e.target.value })
+          }
+        />
+        <input
+          className="input"
+          placeholder="Thumbnail"
+          value={form.thumbnail}
+          onChange={(e) => setForm({ ...form, thumbnail: e.target.value })}
+        />
+        <input
+          className="input"
+          placeholder="Project link"
+          value={form.ref_link}
+          onChange={(e) => setForm({ ...form, ref_link: e.target.value })}
+        />
+      </div>
       <div>
         Visibility
         <div className="flex gap-2">
           <p>Public</p>
           <input
-            checked={form.is_publish === true}
+            checked={form.is_private === false}
             type="radio"
-            name="radio-1"
             className="radio"
-            onClick={() => setForm({ ...form, is_publish: true })}
+            onChange={() => setForm({ ...form, is_private: false })}
           />
         </div>
         <div className="flex gap-2">
           <p>Private</p>
           <input
-            checked={form.is_publish === false}
+            checked={form.is_private === true}
             type="radio"
-            name="radio-1"
             className="radio"
-            onClick={() => setForm({ ...form, is_publish: false })}
+            onChange={() => setForm({ ...form, is_private: true })}
           />
         </div>
+        <input
+          className="input"
+          placeholder="Password"
+          type="password"
+          value={form.password}
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
+          disabled={form.is_private === false}
+        />
+      </div>
+      <RichTextEditor value={form.content} setValue={handleSetContent}/>
+      <div className="flex gap-2">
+        <AdminButton
+          label="Save Draft"
+          className="border pl-2 pr-6 py-1 text-secondary font-semibold text-sm hover:cursor-pointer"
+          action={() => {
+            handleSubmit(false);
+          }}
+        />
+        <AdminButton
+          label="Publish"
+          className="border bg-primary pl-2 pr-6 py-1 text-secondary font-semibold text-sm hover:cursor-pointer"
+          action={() => {
+            handleSubmit(true);
+          }}
+        />
       </div>
     </div>
   );
 }
-// title: {required: true, type: String},
-//     short_description: {required: true, type: String},
-//     content: {required: true, type: String}, //html => covert string => save to db
-//     thumbnail: {required: true, type: String}, //upload cloud -> get public_url -> thumbnail = public_url => save to db
-//     password: {required: false, type: String},
-//     ref_link: {required: false, type: String},
-//     categories: {required: true, type: [Schema.Types.ObjectId], ref: "Category"},
-//     viewed: {required: false, type: Number, default: 0},
-//     is_publish: {required: false, type: Boolean, default: true},
-//     is_private: {required: false, type: Boolean, default: false}

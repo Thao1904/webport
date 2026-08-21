@@ -20,11 +20,15 @@ export async function POST(req: Request) {
     await connectDB()
 
     const body = await req.json()
+    console.log(body);
+    
 
     const project = await service.createProject(body)
 
     return NextResponse.json(project, { status: 201 })
   } catch (err: any) {
+    console.log(err);
+    
     if (err.message === "VALIDATION_ERROR") {
       return NextResponse.json({ error: err.message }, { status: 400 })
     }
