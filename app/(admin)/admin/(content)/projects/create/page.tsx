@@ -197,7 +197,7 @@ export default function CreateProjectPage() {
           disabled={form.is_private === false}
         />
       </div>
-      <RichTextEditor value={form.content} setValue={handleSetContent}/>
+      <RichTextEditor value={form.content} setValue={handleSetContent} storageFolder="projects"/>
       <div className="flex gap-2">
         <AdminButton
           label="Save Draft"
