@@ -9,6 +9,10 @@ export class ProjectRepository {
     return Project.findById(id)
   }
 
+  async findBySlug(slug: string) {
+    return Project.find({slug: slug})
+  }
+
   async create(data: IProjectModel) {
     return Project.create(data)
   }

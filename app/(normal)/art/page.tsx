@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
+import NavBar from '@/component/NavBar';
 
 
 type Artwork = {
@@ -193,36 +194,10 @@ export default function ArtCorner() {
   useEffect(() => {
     fetchArts()
   }, [])
-  console.log(arts)
 
   return (
     <div className="min-h-screen bg-white text-black overflow-hidden">
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm">Back</span>
-          </Link>
-
-          <nav className="hidden md:flex items-center gap-8">
-            <Link href="/about" className="text-sm text-gray-600 hover:text-black transition-colors">
-              About
-            </Link>
-            <Link href="/projects" className="text-sm text-gray-600 hover:text-black transition-colors">
-              Projects
-            </Link>
-            <Link href="/experiences" className="text-sm text-gray-600 hover:text-black transition-colors">
-              Experiences
-            </Link>
-            <Link href="/art-corner" className="text-sm text-black font-medium">
-              Art Corner
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <NavBar />
 
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
         <p className="text-xs text-gray-300 tracking-widest uppercase">Art Corner</p>

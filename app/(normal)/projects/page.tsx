@@ -48,7 +48,7 @@ export default function ProjectsPage() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <Link
-                  href={project.ref_link}
+                  href={"/projects/" + project.slug}
                   className="group block cursor-pointer"
                 >
                   <div className="w-56 h-56 md:w-64 md:h-64 rounded-full border border-gray-200 overflow-hidden relative hover:border-black transition-all duration-500">

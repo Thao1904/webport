@@ -11,6 +11,7 @@ export interface IProjectModel {
   viewed: number
   is_publish: boolean
   is_private: boolean
+  slug: string
 }
 
 const ProjectSchema = new Schema<IProjectModel>(
@@ -24,7 +25,8 @@ const ProjectSchema = new Schema<IProjectModel>(
     categories: {required: true, type: [Schema.Types.ObjectId], ref: "Category"},
     viewed: {required: false, type: Number, default: 0},
     is_publish: {required: false, type: Boolean, default: true},
-    is_private: {required: false, type: Boolean, default: false}
+    is_private: {required: false, type: Boolean, default: false},
+    slug: {required: true, type: String}
   },
   { timestamps: true }
 )

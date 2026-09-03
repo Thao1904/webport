@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import NavItem from "./NavItem";
+import Link from "next/link";
 
 export default function NavBar() {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
@@ -20,9 +21,9 @@ export default function NavBar() {
 
   const navItems = [
     { label: "About", path: "/about" },
-    { label: "Project", path: "/project" },
-    { label: "Experience", path: "/experience" },
-    { label: "Art Corner", path: "/art-corner" },
+    { label: "Project", path: "/projects" },
+    { label: "Experience", path: "/experiences" },
+    { label: "Art Corner", path: "/art" },
   ];
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -45,32 +46,37 @@ export default function NavBar() {
 
       {/* NAVBAR (always fixed) */}
       <div
-        className={`fixed top-0 left-0 w-full z-50 flex justify-end ${clicked ? "px-10 py-10" : "px-8 py-8"}`}
+        className={`fixed top-0 left-0 w-full z-50 flex justify-end ${clicked ? "pl-8 pr-10 py-10" : "px-8 py-8"}`}
         onMouseMove={handleMouseMove}
       >
-        <div
-          className="grid grid-cols-2 gap-2 cursor-pointer"
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-          onClick={() => setClicked((prev) => !prev)}
-        >
-          {/* Dot */}
-          {[...Array(4)].map((_, i) => (
-            <motion.div
-              key={i}
-              className={`${
-                clicked ? "w-2 h-2" : "w-4 h-4"
-              } rounded-full bg-primary`}
-              animate={{
-                x: hovered && !clicked ? positions[i].x : 0,
-                y: hovered && !clicked ? positions[i].y : 0,
-              }}
-              transition={{
-                duration: 0.6,
-                ease: "easeInOut",
-              }}
-            />
-          ))}
+        <div className="flex justify-between w-full items-center">
+          <Link href={"/"} className="text-primary font-bold">
+            Thao
+          </Link>
+          <div
+            className="grid grid-cols-2 gap-2 cursor-pointer"
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            onClick={() => setClicked((prev) => !prev)}
+          >
+            {/* Dot */}
+            {[...Array(4)].map((_, i) => (
+              <motion.div
+                key={i}
+                className={`${
+                  clicked ? "w-2 h-2" : "w-4 h-4"
+                } rounded-full bg-primary`}
+                animate={{
+                  x: hovered && !clicked ? positions[i].x : 0,
+                  y: hovered && !clicked ? positions[i].y : 0,
+                }}
+                transition={{
+                  duration: 0.6,
+                  ease: "easeInOut",
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
 

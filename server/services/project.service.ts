@@ -3,8 +3,7 @@ import { IProjectModel } from "../models/Project"
 import { BaseService } from "./base.service"
 
 const repo = new ProjectRepository()
-
-export class ProjectService extends BaseService{
+export class ProjectService extends BaseService {
   async getAllProjects() {
     return repo.findAll()
   }
@@ -19,8 +18,18 @@ export class ProjectService extends BaseService{
     return project
   }
 
+  async getProjectBySlug(slug: string) {
+    const project = await repo.findBySlug(slug)
+
+    if (!project) {
+      throw new Error("PROJECT_NOT_FOUND")
+    }
+
+    return project
+  }
+
   async createProject(data: IProjectModel) {
-    const requiredList: (keyof IProjectModel)[] = ["title", "short_description", "content", "thumbnail", "categories", "is_public"];
+    const requiredList: (keyof IProjectModel)[] = ["title", "short_description", "content", "thumbnail", "categories", "is_publish"];
 
     const isValid = this.validateFields(data, requiredList);
 
@@ -31,7 +40,8 @@ export class ProjectService extends BaseService{
       throw new Error("VALIDATION_ERROR");
     }
 
-    return repo.create(data)
+    const slug = this.createSlug(data.title);
+    return repo.create({...data, slug})
   }
 
   async updateProject(id: string, data: Partial<IProjectModel>) {
