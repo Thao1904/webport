@@ -27,7 +27,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(project, { status: 201 })
   } catch (err: any) {
-    console.log(err);
+    console.log("Loi: ", err);
     
     if (err.message === "VALIDATION_ERROR") {
       return NextResponse.json({ error: err.message }, { status: 400 })

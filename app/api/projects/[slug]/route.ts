@@ -15,6 +15,8 @@ export async function GET(
 
     return NextResponse.json(project)
   } catch (err: any) {
+    console.log("Looix", err);
+    
     if (err.message === "PROJECT_NOT_FOUND") {
       return NextResponse.json({ error: err.message }, { status: 404 })
     }

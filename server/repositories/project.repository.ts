@@ -1,4 +1,5 @@
 import { Project, IProjectModel } from "../models/Project"
+import "../models/Category"
 
 export class ProjectRepository {
   async findAll() {
@@ -10,7 +11,7 @@ export class ProjectRepository {
   }
 
   async findBySlug(slug: string) {
-    return Project.find({slug: slug})
+    return Project.find({slug: slug}).populate("categories", "name")
   }
 
   async create(data: IProjectModel) {

@@ -7,8 +7,9 @@ import { motion } from "framer-motion";
 
 export default function ProjectPage() {
   const params = useParams();
+  
   const { slug } = params;
-  const [project, setProject] = useState<any>();
+  const [project, setProject] = useState<any>({});
 
   const fetchDetailProject = async () => {
     const res = await fetch("/api/projects/" + slug);
@@ -43,7 +44,7 @@ export default function ProjectPage() {
 
               {/* CATEGORY */}
               <p className="mt-5 text-sm leading-relaxed text-white/60 sm:mt-6 md:mt-7">
-                {project.category}
+                {project.categories && project.categories.map((category: any) => category.name).join(", ") }
               </p>
 
 
@@ -64,18 +65,11 @@ export default function ProjectPage() {
             {/* COLUMN 2 + 3 — CONTENT */}
 
             <div className="min-w-0 md:col-start-2 md:col-span-1 lg:col-start-2 lg:col-span-2">
-
-              {/* THUMBNAIL — ALWAYS FIRST */}
-
-              <div className="w-full overflow-hidden">
-                <img src={project.thumbnail} alt={project.title} className="block h-auto w-full object-cover" />
-              </div>
-
-
               {/* EDITOR CONTENT */}
 
-              <div className="mt-5 w-full sm:mt-6 md:mt-7 lg:mt-8">
-              </div>
+              <div className="mt-5 w-full sm:mt-6 md:mt-7 lg:mt-8"
+              dangerouslySetInnerHTML={{ __html: project.content }}
+              />
 
             </div>
 
