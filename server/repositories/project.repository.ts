@@ -3,7 +3,9 @@ import "../models/Category"
 
 export class ProjectRepository {
   async findAll() {
-    return Project.find().sort({ createdAt: -1 })
+    return Project.find()
+    .select("title categories is_publish is_private slug viewed updatedAt")
+    .sort({ createdAt: -1 }).populate("categories", "name")
   }
 
   async findById(id: string) {

@@ -11,7 +11,9 @@ const actionButtons = (router: ReturnType<typeof useRouter>) => [
   <AdminButton
     label="+ New Project"
     className="border bg-primary pl-2 pr-6 py-1 text-secondary font-semibold text-sm hover:cursor-pointer"
-    action={() => { router.push("/admin/projects/create")}}
+    action={() => {
+      router.push("/admin/projects/create");
+    }}
   />,
 ];
 
@@ -37,18 +39,8 @@ export default function ProjectsPage() {
     setActionButtons(actionButtons(router));
   }, []);
   return (
-    <div className="pl-4">
-      <h1>Projects</h1>
-
-      <button onClick={() => setOpen(true)}>+ Add Project</button>
-
+    <div className="pl-4 w-full col-span-4">
       <ProjectList projects={projects} />
-
-      <CreateProjectModal
-        open={open}
-        onClose={() => setOpen(false)}
-        onSuccess={fetchProjects}
-      />
     </div>
   );
 }
