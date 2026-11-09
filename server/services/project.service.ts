@@ -4,8 +4,13 @@ import { BaseService } from "./base.service"
 
 const repo = new ProjectRepository()
 export class ProjectService extends BaseService {
-  async getAllProjects() {
-    return repo.findAll()
+  async getAllProjects(req: Request) {
+    const { searchParams } = new URL(req.url);
+
+    const page = Number(searchParams.get("page")) || 1;
+    const limit = Number(searchParams.get("limit")) || 10;
+    
+    return repo.findAll(page, limit)
   }
 
   async getProjectById(id: string) {

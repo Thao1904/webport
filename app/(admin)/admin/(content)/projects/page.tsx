@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import ProjectList from "./components/ProjectList";
-import CreateProjectModal from "./components/CreateProjectModal";
 import { useAdmin } from "../../contexts/AdminProvider";
 import AdminButton from "@/component/admin/Button";
 import { useRouter } from "next/navigation";
@@ -21,18 +20,29 @@ export default function ProjectsPage() {
   const router = useRouter();
   const { setActionButtons, setCurrentHeader } = useAdmin();
   const [projects, setProjects] = useState<any[]>([]);
-  const [open, setOpen] = useState(false);
+  const [pagination, setPagination] = useState({
+    total: 0,
+    page: 1,
+    limit: 2,
+    totalPages: 0,
+    hasNextPage: false,
+    hasPrevPage: false,
+  });
 
   const fetchProjects = async () => {
-    const res = await fetch("/api/projects");
+    const res = await fetch(
+      `/api/projects?page=${pagination.page}&limit=${pagination.limit}`,
+    );
 
     const data = await res.json();
-    setProjects(data);
+
+    setProjects(data.projects);
+    setPagination(data.pagination);
   };
 
   useEffect(() => {
     fetchProjects();
-  }, []);
+  }, [pagination.page]);
 
   useEffect(() => {
     setCurrentHeader("Projects")
@@ -40,7 +50,11 @@ export default function ProjectsPage() {
   }, []);
   return (
     <div className="pl-4 w-full col-span-4">
-      <ProjectList projects={projects} />
+      <ProjectList
+        projects={projects}
+        pagination={pagination}
+        setPagination={setPagination}
+      />
     </div>
   );
 }

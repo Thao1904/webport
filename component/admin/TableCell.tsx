@@ -31,7 +31,7 @@ const TableCell: React.FC<TableCellProps> = ({ column, row }) => {
     case "title":
       return (
         <p className="font-semibold text-lg">{value}</p>
-      )  
+      )
     
     case "tags":
       return (

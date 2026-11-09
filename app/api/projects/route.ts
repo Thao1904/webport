@@ -4,11 +4,11 @@ import { NextResponse } from "next/server"
 
 const service = new ProjectService()
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
     await connectDB()
 
-    const data = await service.getAllProjects()
+    const data = await service.getAllProjects(req)
     return NextResponse.json(data)
   } catch (err) {
     return NextResponse.json({ error: "Failed" }, { status: 500 })
